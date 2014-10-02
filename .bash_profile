@@ -1,16 +1,24 @@
 #--------------------------------------------------------------
-git hub commands
+# git hub commands
 #--------------------------------------------------------------
+# setup a new repo with git
+gnew() {
+	git remote add origin "$*"
+	git add --all
+	git commit -m "intial push"
+	git push origin master
+}
+alias gnew=gnew
 
-#push all to git
+# push all to git
 gpushall() {
-	git add --all .
+	git add --all
 	git commit -m "$*"
 	git push origin master
 }
 alias gpushall=gpushall
 
-#push added files only to git
+# push added files only to git
 gpush() {
 	git commit -m "$*"
 	git push origin master
@@ -18,13 +26,13 @@ gpush() {
 alias gpush=gpush
 
 #--------------------------------------------------------------
-github project updates
+# github project updates
 #--------------------------------------------------------------
 
 # push cs50 work to git
 cs50() {
 	cd ~/Dropbox/dev/school/cs50
-	git add --all .
+	git add --all
 	git commit -m "$*"
 	git push origin master    
 }
