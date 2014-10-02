@@ -2,47 +2,56 @@
 # git hub commands
 #--------------------------------------------------------------
 # setup a new repo with git
-gnew() {
+gitnew() {
 	git remote add origin "$*"
 	git add --all
 	git commit -m "intial push"
 	git push origin master
 }
-alias gnew=gnew
+alias gitnew=gitnew
 
 # push all to git
-gpushall() {
+gitpushall() {
 	git add --all
 	git commit -m "$*"
 	git push origin master
 }
-alias gpushall=gpushall
+alias gitpushall=gitpushall
 
 # push added files only to git
-gpush() {
+gitpush() {
 	git commit -m "$*"
 	git push origin master
 }
-alias gpush=gpush
+alias gitpush=gitpush
 
 #--------------------------------------------------------------
 # github project updates
 #--------------------------------------------------------------
 
 # push cs50 work to git
-cs50() {
+gitcs50() {
 	cd ~/Dropbox/dev/school/cs50
 	git add --all
 	git commit -m "$*"
 	git push origin master    
 }
-alias cs50=cs50
+alias gitcs50=gitcs50
 
 # push portia.co to git
-portia.co() {
+gitportia.co() {
 	cd ~/dev/projects/portia.co
 	git add --all
 	git commit -m "$*"
 	git push origin master
 }
-alias portia.co=portia.co
+alias gitportia.co=gitportia.co
+
+# push school folder to git
+gitschool()) {
+	cd ~/Dropbox/dev/school
+	git add --all
+	git commit -m "$*"
+	git push origin master
+}
+alias gitschool=gitschool
