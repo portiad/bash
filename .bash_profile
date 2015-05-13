@@ -13,6 +13,7 @@ bashupdate() {
 	cp /Users/portia/.bash_profile /Users/portia/dev/bash/
 	cd /Users/portia/dev/bash
 	gitpushall "bash updates"
+	~
 }
 alias bashupdate=bashupdate
 
