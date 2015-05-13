@@ -22,7 +22,7 @@ alias bashupdate=bashupdate
 
 alias projects='cd ~/dev/projects'
 alias school='cd ~/dropbox/dev/school'
-alias goecho='cd ~/echo/dev/echo'
+alias goecho='cd ~/dev/echo'
 
 #--------------------------------------------------------------
 # git commands
