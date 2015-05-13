@@ -12,9 +12,7 @@ alias refresh='. ~/.bash_profile'
 bashupdate() {
 	cp /Users/portia/.bash_profile /Users/portia/dev/bash/
 	cd /Users/portia/dev/bash
-	git add --all
-	git commit -m "$*"
-	git push origin master
+	gitpushall "bash updates"
 }
 alias bashupdate=bashupdate
 
