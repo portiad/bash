@@ -7,6 +7,8 @@ alias ~='cd ~'
 alias ..='cd ..'
 alias hidefiles='defaults write com.apple.finder AppleShowAllFiles NO'
 alias showfiles='defaults write com.apple.finder AppleShowAllFiles YES'
+alias refresh='. ~/.bash_profile'
+
 bashupdate() {
 	cp /Users/portia/.bash_profile /Users/portia/dev/bash/
 	cd /Users/portia/dev/bash
