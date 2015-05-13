@@ -1,13 +1,31 @@
 #--------------------------------------------------------------
-# aliases
+# commands
 #--------------------------------------------------------------
 
-alias portia.co='cd ~/dev/projects/portia.co'
+alias ll='ls -la'
+alias ~='cd ~'
+alias ..='cd ..'
+alias hidefiles='defaults write com.apple.finder AppleShowAllFiles NO'
+alias showfiles='defaults write com.apple.finder AppleShowAllFiles YES'
+bashupdate() {
+	cp /Users/portia/.bash_profile /Users/portia/dev/bash/
+	cd /Users/portia/dev/bash
+	git add --all
+	git commit -m "$*"
+	git push origin master
+}
+alias bashupdate=bashupdate
+
+#--------------------------------------------------------------
+# common directory changes
+#--------------------------------------------------------------
+
 alias projects='cd ~/dev/projects'
-
+alias school='cd ~/dropbox/dev/school'
+alias goecho='cd ~/echo/dev/echo'
 
 #--------------------------------------------------------------
-# git hub commands
+# git commands
 #--------------------------------------------------------------
 
 # setup a new repo with git
@@ -36,19 +54,28 @@ gitpush() {
 alias gitpush=gitpush
 
 #--------------------------------------------------------------
-# github project updates
+# docker commands
 #--------------------------------------------------------------
 
-# push cs50 work to git
-gitcs50() {
-	cd ~/Dropbox/dev/school/cs50
-	git add --all
-	git commit -m "$*"
-	git push origin master    
+# start docker
+letsdocker() {
+	boot2docker up
+	$(boot2docker shellinit)
 }
-alias gitcs50=gitcs50
+alias letsdocker=letsdocker
 
-# push portia.co to git
+#--------------------------------------------------------------
+# project specific commands
+#--------------------------------------------------------------
+
+#------------------------------------
+# portia.co
+#------------------------------------
+
+# push to ec2
+alias ec2portia='scp -r -i /Users/portia/.ssh/portiaco.pem /Users/portia/dev/projects/portia.co/site/* ec2-user@ec2-54-187-75-55.us-west-2.compute.amazonaws.com:/var/www/html'
+
+# push to git hub
 gitportia.co() {
 	cd ~/dev/projects/portia.co
 	git add --all
@@ -56,6 +83,10 @@ gitportia.co() {
 	git push origin master
 }
 alias gitportia.co=gitportia.co
+
+#------------------------------------
+# school
+#------------------------------------
 
 # push school folder to git
 gitschool() {
