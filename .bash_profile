@@ -10,21 +10,20 @@ alias showfiles='defaults write com.apple.finder AppleShowAllFiles YES'
 alias refresh='. ~/.bash_profile'
 
 bashupdate() {
-	cp /Users/portia/.bash_profile /Users/portia/dev/bash/
-	cd /Users/portia/dev/bash
-	gitpushall "bash updates"
+	cp /Users/portia/.bash_profile /Users/portia/Google\ Drive/dev/bash/
+	cd /Users/portia/Google\ Drive/dev/bash
+	gitaddpush "master bash updates"
 	~
 }
-alias bashupdate=bashupdate
 
 #--------------------------------------------------------------
 # common directory changes
 #--------------------------------------------------------------
 
-alias projects='cd ~/dev/projects'
+alias projects='cd ~/Google\ Drive/dev/projects'
 alias school='cd ~/dropbox/dev/school'
-alias goecho='cd ~/dev/projects/echo'
-alias portia='cd ~/dev/projects/portia.co'
+alias goecho='cd ~/Google\ Drive/dev/projects/echo'
+alias portia='cd ~/Google\ Drive/dev/projects/portia.co'
 
 #--------------------------------------------------------------
 # git commands
@@ -38,63 +37,107 @@ gitnew() {
 	git commit -m "intial push"
 	git push origin master
 }
-alias gitnew=gitnew
 
-# push all to git
-gitpushall() {
+# push add and push all files to git
+# first param is the branch to push to
+gitaddpush() {
 	git add --all
-	git commit -m "$*"
-	git push origin master
+	gitpush $*
 }
-alias gitpushall=gitpushall
 
-# push added files only to git
+# push exisiting files only to git
+# first param is the branch to push to
 gitpush() {
-	git commit -am "$*"
-	git push origin master
+	if [[ $( git branch --list "$1" ) ]]
+	then
+		value=$(echo "${@:2}")
+		git commit -am "$value"
+		git push origin "$1"
+	else
+		echo "Enter in a valid branch"
+	fi
 }
-alias gitpush=gitpush
+
+gitbranch() {
+	git checkout -b "$1"
+	git push origin "$1"
+}
 
 #--------------------------------------------------------------
 # docker commands
 #--------------------------------------------------------------
 
-# start docker
-letsdocker() {
-	boot2docker up
-	$(boot2docker shellinit)
+# start default docker machine
+alias dmd='dm create -d virtualbox default'
+
+# docker machine
+alias dm=docker-machine
+
+# docker swarm
+alias ds=docker-swarm
+
+# docker compose
+alias dkc=docker-compose
+
+#
+activate() {
+  eval "$(dm env $@)"
 }
-alias letsdocker=letsdocker
 
-#--------------------------------------------------------------
-# project specific commands
-#--------------------------------------------------------------
-
-#------------------------------------
-# portia.co
-#------------------------------------
-
-# push to ec2
-alias ec2portia='scp -r -i /Users/portia/.ssh/portiaco.pem /Users/portia/dev/projects/portia.co/site/* ec2-user@ec2-54-187-75-55.us-west-2.compute.amazonaws.com:/var/www/html'
-
-# push to git hub
-gitportia.co() {
-	cd ~/dev/projects/portia.co
-	git add --all
-	git commit -m "$*"
-	git push origin master
+gimp() {
+	if [ $(dockerstatus gimp) -eq "0" ]
+	then
+		. ~/bin/gimp.sh
+	else
+		docker start $1
+	fi
+	echo "Volume located in ~/Pictures:/root/Pictures"
 }
-alias gitportia.co=gitportia.co
 
-#------------------------------------
-# school
-#------------------------------------
-
-# push school folder to git
-gitschool() {
-	cd ~/Dropbox/dev/school
-	git add --all
-	git commit -m "$*"
-	git push origin master
+sqlitebrowser() {
+	if [ $(dockerstatus sqlitebrowser) -eq "0" ]
+	then
+		. ~/bin/sqlitebrowser.sh
+	else
+		docker start $1
+	fi
+	echo "Volume located in "$(pwd)"/sqlite:/root/sqlite"
 }
-alias gitschool=gitschool
+
+# npm
+npm() {
+  docker run -it --rm -v "$(pwd)":/work -w /work node:latest npm $@
+}
+
+# node
+node() {
+  docker run -it --rm -v "$(pwd)":/work -w /work node:latest node $@
+}
+
+# redis cli
+redis-cli() {
+  sid=`docker run -d redis:latest redis-server $@`
+  docker run -it --rm --link $sid:server redis:latest redis-cli -h server 
+  docker rm -vf $sid
+}
+
+dockerstatus() {
+	if [ $(dm active) != "default" ]
+	then
+		activate default
+	fi
+
+	if [ $(docker inspect $1) != "Error: No such image or container: $1" ]
+	then
+		echo "0"
+	else
+		echo "1"
+	fi
+}
+
+#------------------------------------
+# ec2
+#------------------------------------
+
+# push to portia.co
+alias ec2portia='scp -r -i /Users/portia/.ssh/portiaco.pem /Users/portia/Google\ Drive/dev/projects/portia.co/site/* ec2-user@ec2-54-187-75-55.us-west-2.compute.amazonaws.com:/var/www/html'
