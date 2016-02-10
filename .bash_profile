@@ -10,10 +10,10 @@ alias showfiles='defaults write com.apple.finder AppleShowAllFiles YES'
 alias refresh='. ~/.bash_profile'
 
 bashupdate() {
-	cp /Users/portia/.bash_profile /Users/portia/Google\ Drive/dev/bash/
-	cd /Users/portia/Google\ Drive/dev/bash
-	gitaddpush "master bash updates"
-	~
+  cp /Users/portia/.bash_profile /Users/portia/Google\ Drive/dev/bash/
+  cd /Users/portia/Google\ Drive/dev/bash
+  gitaddpush "master bash updates"
+  ~
 }
 
 #--------------------------------------------------------------
@@ -31,36 +31,36 @@ alias portia='cd ~/Google\ Drive/dev/projects/portia.co'
 
 # setup a new repo with git
 gitnew() {
-	git init
-	git remote add origin "$*"
-	git add --all
-	git commit -m "intial push"
-	git push origin master
+  git init
+  git remote add origin "$*"
+  git add --all
+  git commit -m "intial push"
+  git push origin master
 }
 
 # push add and push all files to git
 # first param is the branch to push to
 gitaddpush() {
-	git add --all
-	gitpush $*
+  git add --all
+  gitpush $*
 }
 
 # push exisiting files only to git
 # first param is the branch to push to
 gitpush() {
-	if [[ $( git branch --list "$1" ) ]]
-	then
-		value=$(echo "${@:2}")
-		git commit -am "$value"
-		git push origin "$1"
-	else
-		echo "Enter in a valid branch"
-	fi
+  if [[ $( git branch --list "$1" ) ]]
+  then
+    value=$(echo "${@:2}")
+    git commit -am "$value"
+    git push origin "$1"
+  else
+    echo "Enter in a valid branch"
+  fi
 }
 
 gitbranch() {
-	git checkout -b "$1"
-	git push origin "$1"
+  git checkout -b "$1"
+  git push origin "$1"
 }
 
 #--------------------------------------------------------------
@@ -81,27 +81,28 @@ alias dkc=docker-compose
 
 #
 activate() {
-  eval "$(dm env $@)"
+  eval "$(dm env $@)"
+  echo "$@ active"
 }
 
 gimp() {
-	if [ $(dockerstatus gimp) -eq "0" ]
-	then
-		. ~/bin/gimp.sh
-	else
-		docker start $1
-	fi
-	echo "Volume located in ~/Pictures:/root/Pictures"
+  if [ $(dockerstatus gimp) -eq "0" ]
+  then
+    . ~/bin/gimp.sh
+  else
+    docker start $1
+  fi
+  echo "Volume located in ~/Pictures:/root/Pictures"
 }
 
 sqlitebrowser() {
-	if [ $(dockerstatus sqlitebrowser) -eq "0" ]
-	then
-		. ~/bin/sqlitebrowser.sh
-	else
-		docker start $1
-	fi
-	echo "Volume located in "$(pwd)"/sqlite:/root/sqlite"
+  if [ $(dockerstatus sqlitebrowser) -eq "0" ]
+  then
+    . ~/bin/sqlitebrowser.sh
+  else
+    docker start $1
+  fi
+  echo "Volume located in "$(pwd)"/sqlite:/root/sqlite"
 }
 
 # npm
@@ -122,17 +123,17 @@ redis-cli() {
 }
 
 dockerstatus() {
-	if [ $(dm active) != "default" ]
-	then
-		activate default
-	fi
+  if [ $(dm active) != "default" ]
+  then
+    activate default
+  fi
 
-	if [ $(docker inspect $1) != "Error: No such image or container: $1" ]
-	then
-		echo "0"
-	else
-		echo "1"
-	fi
+  if [ $(docker inspect $1) != "Error: No such image or container: $1" ]
+  then
+    echo "0"
+  else
+    echo "1"
+  fi
 }
 
 #------------------------------------
