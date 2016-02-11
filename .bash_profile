@@ -90,7 +90,7 @@ gimp() {
   then
     . ~/bin/gimp.sh
   else
-    docker start $1
+    docker start $FUNCNAME
   fi
   echo "Volume located in ~/Pictures:/root/Pictures"
 }
@@ -100,7 +100,7 @@ sqlitebrowser() {
   then
     . ~/bin/sqlitebrowser.sh
   else
-    docker start $1
+    docker start $FUNCNAME
   fi
   echo "Volume located in "$(pwd)"/sqlite:/root/sqlite"
 }
@@ -123,16 +123,16 @@ redis-cli() {
 }
 
 dockerstatus() {
-  if [ $(dm active) != "default" ]
+  if [ "$(dm active)" != "default" ]
   then
     activate default
   fi
 
-  if [ $(docker inspect $1) != "Error: No such image or container: $1" ]
+  if [ "$(docker inspect $1)" != "Error: No such image or container: $1" ]
   then
-    echo "0"
-  else
     echo "1"
+  else
+    echo "0"
   fi
 }
 
